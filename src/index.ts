@@ -7,6 +7,7 @@ import connectToDB from './initializers/db.js'
 import errorHandler from './middleware/error.middleware.js'
 import authRouter from './routes/auth.route.js'
 import mongoSanitize from 'express-mongo-sanitize'
+import userRouter from './routes/user.route.js'
 
 const app = express()
 const PORT = getEnv.PORT
@@ -22,6 +23,7 @@ app.use(helmet())
 if (getEnv.ENVIRONMENT === 'dev') app.use(morgan('dev'))
 
 app.use('/auth', authRouter)
+app.use('/user', userRouter)
 
 app.use(errorHandler)
 
