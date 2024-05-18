@@ -27,6 +27,7 @@ const Order = mongoose.model<OrderType>('Order', orderSchema)
 export interface DeliveryAgentType extends Document {
   _id: Schema.Types.ObjectId
   name: string
+  phone: string
   status: string
   orders: Schema.Types.ObjectId[]
 }
@@ -34,7 +35,8 @@ export interface DeliveryAgentType extends Document {
 const deliveryAgentSchema = new mongoose.Schema<DeliveryAgentType>({
   _id: mongoose.Schema.Types.ObjectId,
   name: { type: String, required: true },
-  status: { type: String, enum: ['online', 'offline'], default: 'online' },
+  phone: { type: String, required: true },
+  status: { type: String, enum: ['online', 'offline', 'busy'], default: 'online' },
   orders: [{ type: Schema.Types.ObjectId, ref: 'Order' }]
 })
 

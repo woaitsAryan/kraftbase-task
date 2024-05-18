@@ -70,6 +70,7 @@ export const PlaceOrderController = catchAsync(
     await newOrder.save()
 
     availableDeliveryAgent.orders.push(newOrder._id)
+    availableDeliveryAgent.status = 'busy'
     restaurant.orders.push(newOrder._id)
 
     await availableDeliveryAgent.save()
@@ -80,7 +81,7 @@ export const PlaceOrderController = catchAsync(
 
 export const GetOrderStatusController = catchAsync(
   async (req: Request, res: Response) => {
-    const orderId = req.params.id
+    const orderId = req.params.orderId
     if (orderId == null) {
       return res.status(400).json({
         message: 'Invalid input'
@@ -104,7 +105,7 @@ export const GetOrderStatusController = catchAsync(
 
 export const LeaveReviewController = catchAsync(
   async (req: Request, res: Response) => {
-    const orderId = req.params.id
+    const orderId = req.params.orderId
     const user = req.body.user as UserType
     const validatedBody = reviewSchema.safeParse(req.body)
 
@@ -149,7 +150,8 @@ export const LeaveReviewController = catchAsync(
       })
     }
 
-    if (orderUser._id !== user._id) {
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
+    if (orderUser._id.toString() !== user._id.toString()) {
       return res.status(403).json({
         message: 'Unauthorized'
       })
@@ -160,9 +162,11 @@ export const LeaveReviewController = catchAsync(
     restaurant.total_orders = totalOrders + 1
     order.review = review
     order.status = 'delivered'
+    deliveryAgent.status = 'online'
 
     await restaurant.save()
     await order.save()
+    await deliveryAgent.save()
 
     return res.json({ message: 'Review added successfully' })
   }

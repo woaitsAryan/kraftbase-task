@@ -6,7 +6,7 @@ const userRouter = express.Router()
 
 userRouter.get('/restaurant', GetResturantsController)
 userRouter.post('/restaurant', protect, PlaceOrderController)
-userRouter.get('/status/:id', protect, GetOrderStatusController)
-userRouter.post('/review/:id', protect, LeaveReviewController)
+userRouter.get('/status/:orderId', protect, GetOrderStatusController)
+userRouter.post('/review/:orderId', protect, LeaveReviewController)
 
 export default userRouter

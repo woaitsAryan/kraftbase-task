@@ -3,11 +3,11 @@ import { CreateRestaurantController, GetRestaurantDetailsController, RestaurantG
 
 const restaurantRouter = express.Router()
 
-restaurantRouter.get('/:id', GetRestaurantDetailsController)
+restaurantRouter.get('/:restaurantId', GetRestaurantDetailsController)
 restaurantRouter.post('/', CreateRestaurantController)
-restaurantRouter.put('/:id', UpdateRestaurantController)
-restaurantRouter.get('/orders/:id', RestaurantGetOrdersController)
-restaurantRouter.put('/orders/:id/:orderId', RestaurantUpdateOrderController)
+restaurantRouter.put('/:restaurantId', UpdateRestaurantController)
+restaurantRouter.get('/orders/:restaurantId', RestaurantGetOrdersController)
+restaurantRouter.put('/orders/:restaurantId/:orderId', RestaurantUpdateOrderController)
 
 // TODO - Add restaurant roles and permissions middleware
 

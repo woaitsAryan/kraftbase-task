@@ -7,7 +7,7 @@ import mongoose from 'mongoose'
 
 export const GetRestaurantDetailsController = catchAsync(
   async (req: Request, res: Response) => {
-    const restaurantId = req.params.id
+    const restaurantId = req.params.restaurantId
 
     const restaurant = await Restaurant.findById(restaurantId)
     if (restaurant == null) {
@@ -43,7 +43,7 @@ export const CreateRestaurantController = catchAsync(
 
 export const UpdateRestaurantController = catchAsync(
   async (req: Request, res: Response) => {
-    const restaurantId = req.params.id
+    const restaurantId = req.params.restaurantId
     const validatedBody = updateRestaurantSchema.safeParse(req.body)
     if (!validatedBody.success) {
       return res.status(400).json({
@@ -81,7 +81,7 @@ export const UpdateRestaurantController = catchAsync(
 
 export const RestaurantGetOrdersController = catchAsync(
   async (req: Request, res: Response) => {
-    const restaurantId = req.params.id
+    const restaurantId = req.params.restaurantId
 
     const restaurant = await Restaurant.findById(restaurantId).populate('orders')
     if (restaurant == null) {
@@ -95,7 +95,7 @@ export const RestaurantGetOrdersController = catchAsync(
 
 export const RestaurantUpdateOrderController = catchAsync(
   async (req: Request, res: Response) => {
-    const restaurantId = req.params.id
+    const restaurantId = req.params.restaurantId
     const orderId = req.params.orderId
     const status = req.body.status as string | null
 

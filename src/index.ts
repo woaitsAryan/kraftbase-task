@@ -9,6 +9,8 @@ import authRouter from './routes/auth.route.js'
 import mongoSanitize from 'express-mongo-sanitize'
 import userRouter from './routes/user.route.js'
 import restaurantRouter from './routes/restaurant.route.js'
+import orderRouter from './routes/order.route.js'
+import agentRouter from './routes/agent.route.js'
 
 const app = express()
 const PORT = getEnv.PORT
@@ -26,6 +28,8 @@ if (getEnv.ENVIRONMENT === 'dev') app.use(morgan('dev'))
 app.use('/auth', authRouter)
 app.use('/user', userRouter)
 app.use('/restaurant', restaurantRouter)
+app.use('/order', orderRouter)
+app.use('/agent', agentRouter)
 
 app.use(errorHandler)
 
