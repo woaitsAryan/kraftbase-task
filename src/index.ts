@@ -4,7 +4,7 @@ import morgan from 'morgan'
 import helmet from 'helmet'
 import getEnv from './helpers/getEnv.js'
 import connectToDB from './initializers/db.js'
-import errorHandler from './middleware/errorHandler.js'
+import errorHandler from './middleware/error.middleware.js'
 import authRouter from './routes/auth.route.js'
 import mongoSanitize from 'express-mongo-sanitize'
 
