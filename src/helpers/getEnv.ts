@@ -9,7 +9,10 @@ const envSchema = z.object({
   DB_PORT: z.string().transform(Number),
   DB_USER: z.string(),
   PORT: z.string().transform(Number),
-  JWT_KEY: z.string()
+  JWT_KEY: z.string(),
+  REDIS_PASSWORD: z.string(),
+  REDIS_HOST: z.string(),
+  REDIS_PORT: z.string().transform(Number)
 })
 
 type EnvType = z.infer<typeof envSchema>

@@ -4,6 +4,7 @@ import { Restaurant } from '../models/restaurant.model.js'
 import { createRestaurantSchema, updateRestaurantSchema } from '../schema/restaurant.schema.js'
 import { Order } from '../models/delivery.model.js'
 import mongoose from 'mongoose'
+import { clearCache } from '../helpers/cache.js'
 
 export const GetRestaurantDetailsController = catchAsync(
   async (req: Request, res: Response) => {
@@ -36,6 +37,8 @@ export const CreateRestaurantController = catchAsync(
       menu: validatedBody.data.menu,
       description: validatedBody.data.description
     })
+
+    void clearCache()
 
     return res.json({ restaurant, message: 'Restaurant created' })
   }

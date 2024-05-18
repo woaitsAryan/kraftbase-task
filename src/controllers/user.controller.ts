@@ -5,6 +5,7 @@ import { placeOrderSchema, reviewSchema } from '../schema/user.schema.js'
 import { DeliveryAgent, Order } from '../models/delivery.model.js'
 import mongoose from 'mongoose'
 import { User, type UserType } from '../models/user.model.js'
+import { fetchRestaurantsFromCache, setRestaurantsToCache } from '../helpers/cache.js'
 
 export const GetResturantsController = catchAsync(
   async (req: Request, res: Response) => {
@@ -12,9 +13,16 @@ export const GetResturantsController = catchAsync(
     const limit = req.query.limit == null ? 10 : parseInt(req.query.limit as string)
     const skip = (page - 1) * limit
 
+    const cachedRestaurants = await fetchRestaurantsFromCache(`restaurants:${page}:${limit}`)
+    if (cachedRestaurants != null) {
+      return res.json({ restaurants: cachedRestaurants, message: 'Restaurants fetched successfully' })
+    }
+
     const restaurants = await Restaurant.find({ status: 'online' })
       .skip(skip)
       .limit(limit)
+
+    void setRestaurantsToCache(`restaurants:${page}:${limit}`, restaurants)
 
     return res.json({ restaurants, message: 'Restaurants fetched successfully' })
   })
