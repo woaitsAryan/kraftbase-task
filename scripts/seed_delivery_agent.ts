@@ -20,7 +20,8 @@ async function seedData (): Promise<void> {
     const deliveryAgent = new DeliveryAgent({
       _id: new mongoose.Types.ObjectId(),
       name: faker.person.fullName(),
-      status: faker.helpers.arrayElement(['online', 'offline'])
+      status: faker.helpers.arrayElement(['online', 'offline']),
+      phone: faker.phone.number()
     })
 
     await deliveryAgent.save()
