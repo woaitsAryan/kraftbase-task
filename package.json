@@ -2,10 +2,13 @@
     "scripts": {
         "build": "tsc",
         "start": "tsc && node dist/src/index.js",
-        "dev": "NODE_OPTIONS='--no-warnings' nodemon --exec 'node --loader ts-node/esm src/index.ts' --ext .ts"
+        "dev": "NODE_OPTIONS='--no-warnings' nodemon --exec 'node --loader ts-node/esm src/index.ts' --ext .ts",
+        "seed-restro": "NODE_OPTIONS='--no-warnings' node --loader ts-node/esm scripts/seed_restraurant.ts",
+        "seed-delivery-agent": "NODE_OPTIONS='--no-warnings' node --loader ts-node/esm scripts/seed_delivery_agent.ts"
     },
     "type": "module",
     "dependencies": {
+        "@faker-js/faker": "^8.4.1",
         "bcrypt-ts": "^5.0.2",
         "cors": "^2.8.5",
         "dotenv": "^16.4.4",
