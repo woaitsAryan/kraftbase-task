@@ -1,20 +1,20 @@
 version: "3.9"
 
 networks:
-  api-network:
+  kraftbase-api-network:
     driver: bridge
 
 services:
-  node-api:
+  kraftbase-api:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: node-api
+    container_name: kraftbase-api
     restart: always
     env_file:
       - .env
     networks:
-      - api-network
+      - kraftbase-api-network
     ports:
       - ${PORT}:${PORT}
     depends_on:
@@ -34,7 +34,7 @@ services:
 
   mongo-db:
     image: mongo:7-jammy
-    container_name: mongo-db
+    container_name: kraftbase-mongo-db
     ports:
       - ${DB_PORT}:${DB_PORT}
     environment:
@@ -45,7 +45,7 @@ services:
       - mongo-data:/data/db
     command: --port ${DB_PORT}
     networks:
-      - api-network
+      - kraftbase-api-network
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongosh localhost:${DB_PORT}/${DB_DATABASE} --quiet
       interval: 30s
@@ -60,5 +60,5 @@ services:
 
 volumes:
   mongo-data:
-    name: mongo-data
+    name: kraftbase-mongo-data
     driver: local
