@@ -1,8 +1,7 @@
 import mongoose from 'mongoose'
 import { faker } from '@faker-js/faker'
 import 'dotenv/config'
-import { randomInt } from 'crypto'
-import { Restaurant } from '../src/models/restaurant.model.js'
+import { DeliveryAgent } from '../src/models/delivery.model.js'
 
 async function seedData (): Promise<void> {
   const DB_HOST = process.env.DB_HOST
@@ -18,23 +17,13 @@ async function seedData (): Promise<void> {
   await mongoose.connect(url)
 
   for (let i = 0; i < 100; i++) {
-    const menuItems = randomInt(1, 10)
-    const menu = []
-    for (let i = 0; i < menuItems; i++) {
-      const item = faker.commerce.productName()
-      const price = randomInt(1, 100)
-      menu.push({ item, price })
-    }
-
-    const restro = new Restaurant({
+    const deliveryAgent = new DeliveryAgent({
       _id: new mongoose.Types.ObjectId(),
-      name: faker.company.name(),
-      location: faker.location.streetAddress(),
-      menu,
+      name: faker.person.fullName(),
       status: faker.helpers.arrayElement(['online', 'offline'])
     })
 
-    await restro.save()
+    await deliveryAgent.save()
   }
 
   await mongoose.connection.close()
