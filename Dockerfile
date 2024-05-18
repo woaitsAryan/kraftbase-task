@@ -5,14 +5,14 @@ FROM base AS deps
 WORKDIR /app
 COPY package.json pnpm-lock.yaml* ./
 
-RUN corepack enable pnpm && pnpm i --frozen-lockfile --prod
+RUN corepack enable pnpm && pnpm i --frozen-lockfile --prod && pnpm install -D typescript
 
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-RUN corepack enable pnpm && pnpm install -D typescript && pnpm run build
+RUN corepack enable pnpm && pnpm run build
 
 FROM base AS runner
 WORKDIR /app

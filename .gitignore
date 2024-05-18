@@ -4,4 +4,3 @@ dist
 logs/error.log
 logs/info.log
 logs/protect.log
-pnpm-lock.yaml
