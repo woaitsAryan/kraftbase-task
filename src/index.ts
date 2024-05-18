@@ -11,11 +11,14 @@ import userRouter from './routes/user.route.js'
 import restaurantRouter from './routes/restaurant.route.js'
 import orderRouter from './routes/order.route.js'
 import agentRouter from './routes/agent.route.js'
+import { connectToRedis } from './initializers/redis.js'
+import healthRouter from './routes/health.route.js'
 
 const app = express()
 const PORT = getEnv.PORT
 
 void connectToDB()
+void connectToRedis()
 
 app.use(mongoSanitize())
 
@@ -30,6 +33,7 @@ app.use('/user', userRouter)
 app.use('/restaurant', restaurantRouter)
 app.use('/order', orderRouter)
 app.use('/agent', agentRouter)
+app.use('/health', healthRouter)
 
 app.use(errorHandler)
 
