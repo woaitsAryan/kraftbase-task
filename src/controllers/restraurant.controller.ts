@@ -3,6 +3,7 @@ import { type Request, type Response } from 'express'
 import { Restaurant } from '../models/restaurant.model.js'
 import { createRestaurantSchema, updateRestaurantSchema } from '../schema/restaurant.schema.js'
 import { Order } from '../models/delivery.model.js'
+import mongoose from 'mongoose'
 
 export const GetRestaurantDetailsController = catchAsync(
   async (req: Request, res: Response) => {
@@ -29,6 +30,7 @@ export const CreateRestaurantController = catchAsync(
     }
 
     const restaurant = await Restaurant.create({
+      _id: new mongoose.Types.ObjectId(),
       name: validatedBody.data.name,
       location: validatedBody.data.location,
       menu: validatedBody.data.menu,
@@ -87,7 +89,6 @@ export const RestaurantGetOrdersController = catchAsync(
         message: 'Restaurant not found'
       })
     }
-
     return res.json({ orders: restaurant.orders, message: 'Orders found' })
   }
 )
@@ -126,7 +127,7 @@ export const RestaurantUpdateOrderController = catchAsync(
     }
 
     order.status = status
-    await restaurant.save()
+    await order.save()
 
     return res.json({ message: 'Order updated' })
   }

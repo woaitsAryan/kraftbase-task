@@ -11,7 +11,7 @@ const placeOrderSchema = z.object({
 
 const reviewSchema = z.object({
   review: z.string(),
-  rating: z.number()
+  rating: z.number().int().min(1).max(5)
 })
 
 export { placeOrderSchema, reviewSchema }

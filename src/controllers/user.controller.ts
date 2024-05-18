@@ -32,6 +32,24 @@ export const PlaceOrderController = catchAsync(
 
     const { restaurantId, items } = validatedBody.data
 
+    const restaurant = await Restaurant.findById(restaurantId)
+    if (restaurant == null) {
+      return res.status(404).json({
+        message: 'Restaurant not found'
+      })
+    }
+
+    const restaurantMenu = restaurant.menu
+    let total = 0
+    const validItems = items.filter(item => {
+      const menuItem = restaurantMenu.find(menuItem => menuItem.item === item.item)
+      if (menuItem != null && menuItem.price === item.price) {
+        total += menuItem.price * item.quantity // Multiply the price by the quantity and add it to the total
+        return true
+      }
+      return false
+    })
+
     const availableDeliveryAgent = await DeliveryAgent.findOne({ status: 'online' })
     if (availableDeliveryAgent == null) {
       return res.status(500).json({
@@ -41,18 +59,21 @@ export const PlaceOrderController = catchAsync(
 
     const newOrder = new Order({
       _id: new mongoose.Types.ObjectId(),
-      user: user._id,
-      restaurant: restaurantId,
-      items,
+      userId: user._id,
+      restaurantId,
+      items: validItems,
       status: 'placed',
-      deliveryAgent: availableDeliveryAgent._id
+      deliveryAgentId: availableDeliveryAgent._id,
+      price: total
     })
 
     await newOrder.save()
 
     availableDeliveryAgent.orders.push(newOrder._id)
+    restaurant.orders.push(newOrder._id)
 
     await availableDeliveryAgent.save()
+    await restaurant.save()
 
     return res.json({ message: 'Order placed successfully', orderId: newOrder._id })
   })
@@ -99,6 +120,11 @@ export const LeaveReviewController = catchAsync(
     if (order == null) {
       return res.status(404).json({
         message: 'Order not found'
+      })
+    }
+    if (order.status !== 'enroute') {
+      return res.status(400).json({
+        message: 'Order not delivered'
       })
     }
 

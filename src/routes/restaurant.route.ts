@@ -1,14 +1,14 @@
 import express from 'express'
 import { CreateRestaurantController, GetRestaurantDetailsController, RestaurantGetOrdersController, RestaurantUpdateOrderController, UpdateRestaurantController } from '../controllers/restraurant.controller.js'
 
-const restraurantRouter = express.Router()
+const restaurantRouter = express.Router()
 
-restraurantRouter.get('/:id', GetRestaurantDetailsController)
-restraurantRouter.post('/', CreateRestaurantController)
-restraurantRouter.put('/:id', UpdateRestaurantController)
-restraurantRouter.get('/orders/:id', RestaurantGetOrdersController)
-restraurantRouter.post('/orders/:id', RestaurantUpdateOrderController)
+restaurantRouter.get('/:id', GetRestaurantDetailsController)
+restaurantRouter.post('/', CreateRestaurantController)
+restaurantRouter.put('/:id', UpdateRestaurantController)
+restaurantRouter.get('/orders/:id', RestaurantGetOrdersController)
+restaurantRouter.put('/orders/:id/:orderId', RestaurantUpdateOrderController)
 
 // TODO - Add restaurant roles and permissions middleware
 
-export default restraurantRouter
+export default restaurantRouter

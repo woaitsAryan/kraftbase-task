@@ -8,6 +8,7 @@ export interface OrderType extends Document {
   status: string
   deliveryAgentId: Schema.Types.ObjectId
   review: string
+  price: number
 }
 
 const orderSchema = new mongoose.Schema<OrderType>({
@@ -15,9 +16,10 @@ const orderSchema = new mongoose.Schema<OrderType>({
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   restaurantId: { type: Schema.Types.ObjectId, ref: 'Restaurant', required: true },
   items: [{ item: { type: String }, price: { type: Number }, quantity: { type: Number } }],
-  status: { type: String, enum: ['placed', 'accepted', 'rejected', 'delivered'], default: 'placed' },
+  status: { type: String, enum: ['placed', 'accepted', 'rejected', 'enroute', 'delivered'], default: 'placed' },
   deliveryAgentId: { type: Schema.Types.ObjectId, ref: 'DeliveryAgent' },
-  review: { type: String }
+  review: { type: String },
+  price: { type: Number, required: true }
 })
 
 const Order = mongoose.model<OrderType>('Order', orderSchema)
