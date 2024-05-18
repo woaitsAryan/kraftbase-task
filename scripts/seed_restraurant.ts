@@ -31,7 +31,8 @@ async function seedData (): Promise<void> {
       name: faker.company.name(),
       location: faker.location.streetAddress(),
       menu,
-      status: faker.helpers.arrayElement(['online', 'offline'])
+      status: faker.helpers.arrayElement(['online', 'offline']),
+      description: faker.lorem.sentence()
     })
 
     await restro.save()
