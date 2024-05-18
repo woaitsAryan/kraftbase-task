@@ -2,12 +2,13 @@ import jwt from 'jsonwebtoken'
 import type { Request, Response, NextFunction } from 'express'
 import envGet from '../helpers/getEnv.js'
 import logger from '../../logs/logger.js'
+import { User } from '../models/user.model.js'
 
-export const protect = async (
+export const protect = (
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> => {
+): void => {
   if (
     req.headers.authorization == null ||
     !req.headers.authorization.startsWith('Bearer')
@@ -24,7 +25,24 @@ export const protect = async (
         .status(401)
         .json({ error: 'Unauthorized access', verified: false })
     }
-    req.body.decoded = decoded
-    next()
+    if (decoded?.sub == null) {
+      return res
+        .status(401)
+        .json({ error: 'Unauthorized access', verified: false })
+    }
+    User.findById(decoded.sub).then((existingUser) => {
+      if (existingUser == null) {
+        return res
+          .status(401)
+          .json({ error: 'Unauthorized access', verified: false })
+      }
+      req.body.user = existingUser
+      next()
+    }).catch((err) => {
+      logger.error(err.message + 'by' + req.ip)
+      return res
+        .status(401)
+        .json({ error: 'Unauthorized access', verified: false })
+    })
   })
 }
