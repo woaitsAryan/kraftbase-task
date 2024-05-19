@@ -8,6 +8,7 @@ import errorHandler from './middleware/error.middleware.js'
 import mongoSanitize from 'express-mongo-sanitize'
 import restaurantRouter from './routes/restaurant.route.js'
 import { connectToRedis } from './initializers/redis.js'
+import healthRouter from './routes/health.route.js'
 
 const app = express()
 const PORT = getEnv.PORT
@@ -24,6 +25,7 @@ app.use(helmet())
 if (getEnv.ENVIRONMENT === 'dev') app.use(morgan('dev'))
 
 app.use('/restaurant', restaurantRouter)
+app.use('/health', healthRouter)
 
 app.use(errorHandler)
 
