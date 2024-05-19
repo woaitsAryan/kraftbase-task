@@ -2,7 +2,8 @@
     "scripts": {
         "build": "tsc",
         "start": "tsc && node dist/src/index.js",
-        "dev": "NODE_OPTIONS='--no-warnings' nodemon --exec 'node --loader ts-node/esm src/index.ts' --ext .ts"
+        "dev": "NODE_OPTIONS='--no-warnings' nodemon --exec 'node --loader ts-node/esm src/index.ts' --ext .ts",
+        "seed": "NODE_OPTIONS='--no-warnings' node --loader ts-node/esm scripts/seed.ts"
     },
     "type": "module",
     "dependencies": {

@@ -72,7 +72,7 @@ To run the Kraftbase Backend, follow these steps:
 
 5. The application will be accessible at `http://localhost:8000` by default.
 
-6. You can seed the database with dummy restaruants and delivery agents using `pnpm run seed-restro` and `pnpm run seed-delivery-agent` or `node scripts/seed_restraurant.js` and `node scripts/seed_delivery_agent.js` if built
+6. You can seed the database with dummy restaruants and delivery agents using `cd restaurant && pnpm run seed` and `cd delivery_agent && pnpm run seed` or `node restaurant/scripts/seed.js` and `node delivery_agent/scripts/seed.js` if built
 
 Best Regards,
 Aryan Bharti
