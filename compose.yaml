@@ -5,23 +5,23 @@ networks:
     driver: bridge
 
 services:
-  kraftbase-api:
+  kraftbase-api-delivery-microservice:
     build:
-      context: .
+      context: ./delivery_agent
       dockerfile: Dockerfile
-    container_name: kraftbase-api
+    container_name: kraftbase-api-delivery-microservice
     restart: always
     env_file:
-      - .env
+      - ./delivery_agent/.env
     networks:
       - kraftbase-api-network
     ports:
-      - ${PORT}:${PORT}
+      - ${DELIVERY_PORT}:${DELIVERY_PORT}
     depends_on:
       mongo-db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "wget", "--spider", "http://127.0.0.1:${PORT}/health"]
+      test: ["CMD", "wget", "--spider", "http://127.0.0.1:${DELIVERY_PORT}/health"]
       interval: 1m
       timeout: 5s
       retries: 3
@@ -31,6 +31,61 @@ services:
       options:
         max-size: "200k"
         max-file: "10"
+
+  kraftbase-api-restaurant-microservice:
+    build:
+      context: ./restaurant
+      dockerfile: Dockerfile
+    container_name: kraftbase-api-restaurant-microservice
+    restart: always
+    env_file:
+      - ./restaurant/.env
+    networks:
+      - kraftbase-api-network
+    ports:
+      - ${RESTAURANT_PORT}:${RESTAURANT_PORT}
+    depends_on:
+      mongo-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://127.0.0.1:${RESTAURANT_PORT}/health"]
+      interval: 1m
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+      
+  kraftbase-api-user-microservice:
+    build:
+      context: ./user
+      dockerfile: Dockerfile
+    container_name: kraftbase-api-user-microservice
+    restart: always
+    env_file:
+      - ./user/.env
+    networks:
+      - kraftbase-api-network
+    ports:
+      - ${USER_PORT}:${USER_PORT}
+    depends_on:
+      mongo-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://127.0.0.1:${USER_PORT}/health"]
+      interval: 1m
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+
 
   mongo-db:
     image: mongo:7-jammy
