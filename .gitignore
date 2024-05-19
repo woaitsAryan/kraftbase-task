@@ -1,6 +1,6 @@
 node_modules
 dist
 .env
-logs/error.log
-logs/info.log
-logs/protect.log
+error.log
+info.log
+protect.log
