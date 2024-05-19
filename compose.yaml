@@ -133,6 +133,16 @@ services:
       options:
         max-size: "200k"
         max-file: "10"
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - kraftbase-api-delivery-microservice
+      - kraftbase-api-restaurant-microservice
+      - kraftbase-api-user-microservice
 
 volumes:
   mongo-data:
